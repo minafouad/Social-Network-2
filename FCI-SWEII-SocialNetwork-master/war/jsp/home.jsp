@@ -50,5 +50,43 @@
      friend name:<input type="text" name="uname" /> <br>
 		 <input	type="submit" value="groupchat">
 	</form>
+	<form action="/social/makepost" method="post">
+		feelings<input type="text"name="feelings" /> <br>
+		hashtag<input type="text"name="hash" /> <br>
+		privacy<input type="text"name="privacy" /> <br>
+		<textarea name="post" rows="4" cols="50"></textarea>
+		<br> <input type="submit" value="post">
+	</form>
+	<form action="/social/likepost" method="post">
+     postid <input type="text" name="ID" /> <br>
+		 <input
+			type="submit" value="like post">
+			<a
+			href="/social/createpage/">createpage</a> <br>
+	</form>
+	<form action="/social/sharepost" method="post">
+     postid <input type="text" name="ID"/><br>
+		 <input
+			type="submit"value="share">
+			${it.post}
+	</form>
+	
+	<form action="/social/hashtag" method="post">
+       hashtag <input type="text" name="hg"/><br>
+		 <input
+			type="submit"value="searchhashnum">
+			${it.hg}
+	</form>
+	
+	<form action="/social/Htag" method="post">
+       hashtag <input type="text" name="htag"/><br>
+		 <input
+			type="submit"value="display post">
+	</form>
 </body>
+
+
+		
+			
+	
 </html>

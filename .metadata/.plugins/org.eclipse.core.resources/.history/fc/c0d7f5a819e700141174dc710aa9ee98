@@ -1,0 +1,409 @@
+package com.FCI.SWE.Models;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+
+/**
+ * <h1>User Entity class</h1>
+ * <p>
+ * This class will act as a model for user, it will holds user data
+ * </p>
+ *
+ * @author Mohamed Samir
+ * @version 1.0
+ * @since 2014-02-12
+ */
+public class UserEntity {
+	private String name;
+	private String email;
+	private String password;
+	private String name2;
+
+	/**
+	 * Constructor accepts user data
+	 * 
+	 * @param name
+	 *            user name
+	 * @param email
+	 *            user email
+	 * @param password
+	 *            user provided password
+	 */
+	public UserEntity(String name, String email, String password) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+
+	}
+
+	//name=recievername  name2=sendername where reciver name is who accept request from his page and he the login name
+	public UserEntity(String name, String name2) {
+		this.name = name;
+		this.name2 = name2;
+
+	}
+	public UserEntity() {
+		
+
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getName2() {
+		return name2;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPass() {
+		return password;
+	}
+
+	/**
+	 * 
+	 * This static method will form UserEntity class using json format contains
+	 * user data
+	 * 
+	 * @param json
+	 *            String in json format contains user data
+	 * @return Constructed user entity
+	 */
+	public static UserEntity getUser(String json) {
+
+		JSONParser parser = new JSONParser();
+		try {
+			JSONObject object = (JSONObject) parser.parse(json);
+			return new UserEntity(object.get("name").toString(), object.get(
+					"email").toString(), object.get("password").toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	/**
+	 * 
+	 * This static method will form UserEntity class using the name you want to
+	 * search and in datastore
+	 * 
+	 * @param name
+	 *            name of person the user want to search about
+	 * 
+	 * @return Constructed user entity
+	 */
+
+	public static UserEntity getsearch(String name) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("users");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		for (Entity entity : pq.asIterable()) {
+			System.out.println(entity.getProperty("name").toString());
+			if (entity.getProperty("name").toString().equals(name)) {
+				UserEntity returnedUser = new UserEntity(entity.getProperty(
+						"name").toString(), entity.getProperty("email")
+						.toString(), entity.getProperty("password").toString());
+				return returnedUser;
+			}
+		}
+
+		return null;
+	}
+
+	// /////////////////
+	/**
+	 * 
+	 * This static method will form UserEntity class using json format contains
+	 * user data will take the name of user and the person he want to serach
+	 * about
+	 * 
+	 * @param json
+	 *            String in json format contains user name and sender request
+	 *            name
+	 * @return Constructed user entity
+	 */
+
+	/**
+	 * This method will be used to save user object in datastore
+	 * 
+	 * @return boolean if user is saved correctly or not
+	 */
+	public Boolean saveUser() {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("users");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("users", list.size() + 1);
+
+		employee.setProperty("name", this.name);
+		employee.setProperty("email", this.email);
+		employee.setProperty("password", this.password);
+		datastore.put(employee);
+
+		return true;
+
+	}
+
+	/**
+	 * This method will be used to save the request sender and the wanted person
+	 * in datastore
+	 * 
+	 * @return boolean if user is saved correctly or not
+	 */
+
+	public Boolean AcceptFriend(String rname,String sname) {
+
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("friends");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		//List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+	//	Entity employee = new Entity("friends", list.size() + 1);
+		
+		for (Entity entity : pq.asIterable()) {
+		//	System.out.println(entity.getProperty("sendername").toString()  + " .." + entity.getProperty("recievername").toString()+"\n");
+			//System.out.println(name2  + " ...." + name+"\n");
+			//System.out.println(name +"name---");
+			//System.out.println("recievername"+entity.getProperty("recievername").toString()+"-----");
+			//System.out.println(name2 +"name2---");
+			//System.out.println("sendername"+entity.getProperty("sendername").toString()+"-----");
+    	if (entity.getProperty("recievername").toString().equals(rname)||entity.getProperty("sendername").toString().equals(sname)) {
+    		//System.out.println(name  + " " + name2+"\n");
+    		
+    		    entity.setProperty("status", "accepted");
+				datastore.put(entity);
+				break;
+			}
+      
+		
+		}
+
+		return true;
+	}
+
+	public Boolean addfriend() {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("friends");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("friends", list.size() + 1);
+// 
+		employee.setProperty("sendername", this.name2);
+		employee.setProperty("recievername", this.name);
+		employee.setProperty("status", "notaccepted");
+		datastore.put(employee);
+
+		return true;
+
+	}
+
+	public static UserEntity getUser(String name, String pass) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("users");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		for (Entity entity : pq.asIterable()) {
+			System.out.println(entity.getProperty("name").toString());
+			if (entity.getProperty("name").toString().equals(name)
+					&& entity.getProperty("password").toString().equals(pass)) {
+				UserEntity returnedUser = new UserEntity(entity.getProperty(
+						"name").toString(), entity.getProperty("email")
+						.toString(), entity.getProperty("password").toString());
+				return returnedUser;
+			}
+		}
+
+		return null;
+	}
+
+	public static Boolean sendMsg(String Msg , String Rname , String uname) {
+
+		
+			DatastoreService datastore = DatastoreServiceFactory
+					.getDatastoreService();
+			Query gaeQuery = new Query("users");
+			PreparedQuery pq = datastore.prepare(gaeQuery);
+			//List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		//	Entity employee = new Entity("friends", list.size() + 1);
+			
+			for (Entity entity : pq.asIterable()) {
+			//	System.out.println(entity.getProperty("sendername").toString()  + " .." + entity.getProperty("recievername").toString()+"\n");
+				//System.out.println(name2  + " ...." + name+"\n");
+				System.out.println(entity.getProperty("name").toString() +"  entity---");
+				
+      	if (entity.getProperty("name").toString().equals(Rname)){
+      	
+      	    gaeQuery = new Query("Messages");
+    		 pq = datastore.prepare(gaeQuery);
+    		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+ 
+    		System.out.println(Rname +"  search---");
+    		
+    		Entity employee = new Entity("Messages", list.size() + 1);
+    // 
+    		employee.setProperty("uname", uname);
+    		employee.setProperty("Rname", Rname);
+    		employee.setProperty("Msg", Msg);
+    		employee.setProperty("status", "not seen");
+    		datastore.put(employee);
+    		return true;
+           }
+	      
+			
+			}
+
+			return false;
+		
+		
+	}
+
+	
+	public static ArrayList<String> messnotification(String name) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("Messages");
+		ArrayList<String>savemessage= new ArrayList<String>();
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		
+		for (Entity entity : pq.asIterable()) {
+			
+			if (entity.getProperty("Rname").toString().equals(name)
+			
+					&& entity.getProperty("status").toString().equals("not seen")) {
+			System.out.println("entity " + name);
+				savemessage.add( entity.getProperty("uname").toString());
+				savemessage.add( entity.getProperty("Msg").toString());
+				entity.setProperty("status", "seen");
+				datastore.put(entity);
+		    	        
+			}
+		}
+
+		return savemessage;
+	}
+	
+	
+	public static ArrayList<String> sfrnotification(String name) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("friends");
+		ArrayList<String>savesfr= new ArrayList<String>();
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		
+		for (Entity entity : pq.asIterable()) {
+			String receiveName = entity.getProperty("recievername").toString().trim();
+			System.out.println("receiver NAme: /'." + receiveName);
+			System.out.println("Passed Name/'." +name);
+			if (receiveName.equals(name)) {
+				//System.out.println("entity -oinu8g---/'." + entity.getProperty("sendername").toString());
+				savesfr.add(entity.getProperty("sendername").toString());
+				System.out.println("in condition ----." + name);
+			}
+		}
+
+		return savesfr;
+	}
+	
+	
+	public static ArrayList<String> get_all_friends(String name) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
+		Query gaeQuery = new Query("friends");
+		ArrayList<String>savefriends= new ArrayList<String>();
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		
+		for (Entity entity : pq.asIterable()) {
+			String receiveName = entity.getProperty("recievername").toString().trim();
+			String state=entity.getProperty("status").toString().trim();
+			//System.out.println("receiver NAme: /'." + receiveName);
+		//	System.out.println("Passed Name/'." +name);
+			if (receiveName.equals(name)&&state.equals("accepted")){
+				//System.out.println("entity -oinu8g---/'." + entity.getProperty("sendername").toString());
+				savefriends.add(entity.getProperty("sendername").toString());
+				//System.out.println("in condition ----" +name);
+			}
+		}
+
+		return savefriends;
+	}
+	
+	
+	
+	
+	public Boolean posts(String post,String uname) {
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("posts");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		Entity employee = new Entity("posts", list.size() + 1);
+
+		employee.setProperty("name", uname);
+		employee.setProperty("post", post);
+		employee.setProperty("like", 0);
+		datastore.put(employee);
+
+		return true;
+
+	}
+	
+	public Boolean likepostes(String rname,String ID ) {
+
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("friends");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		
+		for (Entity entity : pq.asIterable()) {
+		
+    	if (entity.getProperty("ID").toString().equals(ID)) {
+    		//System.out.println(name  + " " + name2+"\n");
+    	String x=entity.getProperty("like").toString().trim();
+    		
+    int z=	Integer.parseInt(x);
+    	z++;
+    		    entity.setProperty("like",z);
+				datastore.put(entity);
+				break;
+			}
+      
+		
+		}
+
+		return true;
+	}
+
+	}
+
+
