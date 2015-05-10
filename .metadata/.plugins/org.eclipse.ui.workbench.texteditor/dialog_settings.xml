@@ -13,11 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="retJson" key="selection"/>
+		<item value="changePri" key="selection"/>
 		<list key="findhistory">
-			<item value="retJson"/>
-			<item value="notify"/>
-			<item value="/send"/>
+			<item value="changePri"/>
+			<item value="accept"/>
+			<item value="SFR()"/>
+			<item value="Notification"/>
+			<item value="ChangePostPrivacy"/>
+			<item value="sharepost"/>
+			<item value="shareService"/>
+			<item value="likepage"/>
 		</list>
 		<list key="replacehistory">
 		</list>

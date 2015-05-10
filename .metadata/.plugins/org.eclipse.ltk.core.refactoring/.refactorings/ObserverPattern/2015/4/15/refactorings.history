@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;observerPattern&apos; to &apos;FCI-SWEII-SocialNetwork-master/src&apos;&#x0D;&#x0A;- Original project: &apos; ObserverPattern&apos;&#x0D;&#x0A;- Destination element: &apos;FCI-SWEII-SocialNetwork-master/src&apos;&#x0D;&#x0A;- Original element: &apos; ObserverPattern/src/observerPattern&apos;" description="Copy package" destination="=FCI-SWEII-SocialNetwork-master/src" element1="/src&lt;observerPattern" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1428384915823" version="1.0"/>
+</session>

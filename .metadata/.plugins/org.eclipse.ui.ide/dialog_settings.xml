@@ -4,23 +4,23 @@
 		<item value="185" key="DIALOG_Y_ORIGIN"/>
 		<item value="381" key="DIALOG_X_ORIGIN"/>
 	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
 	<section name="ExternalProjectImportWizard">
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
-			<item value="E:\CS352-SE2015-Section4-Observer DesignPattern &amp;MVC\CS352-SE2015-section4-ObserverPattern"/>
-			<item value="C:\Users\M I N A\Desktop\RobotNaviagationProblem4Students"/>
-			<item value="C:\Users\M I N A\Desktop\RobotNaviagationProblem"/>
+			<item value="E:\FCI-SWEII-SocialNetwork-master"/>
+			<item value="E:\education\3rd year\second term\software2\FCI-SWEII-SocialNetwork-master\FCI-SWEII-SocialNetwork-master"/>
+			<item value="E:\education\3rd year\second term\software matreials\FCI-SWEII-SocialNetwork-master"/>
 			<item value="E:\education\3rd year\second term\software2\FCI-SWEII-SocialNetwork-master"/>
-			<item value="E:\Project SE"/>
+			<item value="C:\Users\M I N A\Desktop\FCI-CS352-Excellent-Social-Media-master"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
 			<item value=""/>
-		</list>
-	</section>
-	<section name="WORKBENCH_SETTINGS">
-		<list key="ENABLED_TRANSFERS">
 		</list>
 	</section>
 	<section name="NewWizardAction">

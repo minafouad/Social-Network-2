@@ -12,5 +12,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.appengine.tools.development.DevAppServerMain"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--port=8888 &quot;E:\education\3rd year\second term\software2\FCI-SWEII-SocialNetwork-master\FCI-SWEII-SocialNetwork-master\war&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="FCI-SWEII-SocialNetwork-master"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50 -Xmx512m -javaagent:E:\programmes\eclipse\plugins\com.google.appengine.eclipse.sdkbundle_1.9.17\appengine-java-sdk-1.9.17\lib\agent\appengine-agent.jar"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50 -javaagent:E:\programmes\eclipse\plugins\com.google.appengine.eclipse.sdkbundle_1.9.17\appengine-java-sdk-1.9.17\lib\agent\appengine-agent.jar -Xmx512m"/>
 </launchConfiguration>

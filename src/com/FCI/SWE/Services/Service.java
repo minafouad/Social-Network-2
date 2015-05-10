@@ -76,11 +76,18 @@ public class Service {
 	 * 
 	 * @param uname
 	 *            provided user name
+
+	 * 
+	 * @param friend name
+	 *            provided friend name
+	 * 
+
 	 * @param email
 	 *            provided user email
 	 * @param pass
 	 *            provided password
 	 * @return Status json
+
 	 */
 	
 	@POST
@@ -132,6 +139,7 @@ public class Service {
 	 * 
 	 * 
 	 */
+	
 	@POST
 	@Path("/AcceptService")
 	public String AcceptService(@FormParam("uname") String uname , @FormParam("fname") String fname) {
@@ -150,7 +158,6 @@ public class Service {
 		return object.toString();
 
 	}
-
 ///}
 //di bta8d mn user controll  w check user entity
 	/**
@@ -177,5 +184,229 @@ public class Service {
 		return object.toString();
 
 	}
-	
+	@POST
+	@Path("/sendMsg")
+	public String sendMsg(@FormParam("uname") String uname,
+
+			@FormParam("Rname") String Rname ,
+			@FormParam("Msg") String Msg ) {
+		System.out.println(Rname +"  service---");
+		
+		JSONObject object = new JSONObject();
+		boolean user = UserEntity.sendMsg(Msg ,Rname,uname);
+		if (user == false) {
+			object.put("Status", "Failed");
+
+		} else {
+			object.put("Status", "OK");
+		}
+
+		return object.toString();
+
+	}	
+
+///////////////////////////////////
+	@POST
+	@Path("/messagenotificationservice")
+	public String messagenotification(@FormParam("uname") String uname) {
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity(); 
+		ArrayList<String>savemessage= new ArrayList<String>(user.messnotification(uname));
+		object.put("msgs", savemessage);
+		System.out.println("service " + uname);
+		
+		
+
+		return object.toString();
+
+
 }
+	
+	
+	@POST
+	@Path("/sfrservice")
+	public String sfrnotification(@FormParam("uname") String uname){
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity(); 
+		ArrayList<String>savesfr= new ArrayList<String>(user.sfrnotification(uname));
+		object.put("sfr", savesfr);
+		//System.out.println("service " + uname);
+		
+		
+
+		return object.toString();
+
+
+}
+	
+	
+	@POST
+	@Path("/getfriendsservice")
+	public String show_friends(@FormParam("uname") String uname){
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity(); 
+		ArrayList<String>getfriends= new ArrayList<String>(user.get_all_friends(uname));
+		object.put("sfr", getfriends);
+		//System.out.println("service " + uname);
+		
+		
+
+		return object.toString();
+
+
+}
+	
+	
+	@POST
+	@Path("/postservice")
+	public String mpost(@FormParam("uname") String uname,
+
+			@FormParam("post") String post,@FormParam("feelings") String feelings,@FormParam("hash") String hash, @FormParam("privacy") String privacy){
+		
+		
+		JSONObject object = new JSONObject();
+		//UserEntity user = UserEntity.posts(post,uname);
+		//boolean user = UserEntity.posts(post,uname);
+		UserEntity user = new UserEntity( );
+		
+		System.out.print("////////////"+hash+"***********************");
+				user.posts(post,uname,feelings,hash,privacy);
+		//if (user == false) {
+			//object.put("Status", "Failed");
+
+		//} else {
+			object.put("Status", "OK");
+		//}
+
+		return object.toString();
+
+	}	
+	
+	@POST
+	@Path("/likepost")
+	public String likeposts(@FormParam("uname") String uname ,@FormParam("ID") String ID) {
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity( );
+		//System.out.println(uname  + " " + fname);
+		
+				user.likepostes(uname,ID );
+		
+		
+		if (user == null) {
+			object.put("Status", "Failed");
+
+		} else {
+			object.put("Status", "OK");
+			//object.put("name", user.getName());
+		}
+		return object.toString();
+
+	}
+	
+	@POST
+	@Path("/shareService")
+	public String shareService(@FormParam("uname") String uname,
+			@FormParam("ID") String ID) {
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity();
+	String s=user.shareposts(uname, ID);
+		
+			
+			object.put("post",s);
+			
+			
+		
+
+		return object.toString();
+	}
+	
+	@POST
+	@Path("/createpageservice")
+	public String createpage(@FormParam("name") String name,
+
+			@FormParam("uname") String uname,@FormParam("type") String type,@FormParam("category") String category){
+		
+		
+		JSONObject object = new JSONObject();
+		//UserEntity user = UserEntity.posts(post,uname);
+		//boolean user = UserEntity.posts(post,uname);
+		UserEntity user = new UserEntity( );
+		
+		
+				user.createpage(name,uname,type,category);
+		//if (user == false) {
+			//object.put("Status", "Failed");
+
+		//} else {
+			object.put("Status", "OK");
+		//}
+
+		return object.toString();
+
+	}
+	
+	
+	@POST
+	@Path("/likepages")
+	public String likepages(@FormParam("uname") String uname ,@FormParam("name") String name) {
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity( );
+		//System.out.println(uname  + " " + fname);
+		
+				user.likepagess(uname,name );
+		
+		
+		if (user == null) {
+			object.put("Status", "Failed");
+
+		} else {
+			object.put("Status", "OK");
+			//object.put("name", user.getName());
+		}
+		return object.toString();
+
+	}
+	
+	
+	@POST
+	@Path("/hService")
+	public String hgService(@FormParam("hg") String hg) {
+		JSONObject object = new JSONObject();
+		int counter= UserEntity.gethash(hg);
+		if (counter == 0) {
+			object.put("Status", "Failed");
+
+		} else {
+			object.put("Status", "OK");
+			object.put("hg", counter);
+			
+		}
+
+		return object.toString();
+
+	}
+	
+
+	@POST
+	@Path("/htagservice")
+	public String displaypost(@FormParam("uname") String uname,@FormParam("htag") String htag){
+		JSONObject object = new JSONObject();
+		UserEntity user = new UserEntity(); 
+		ArrayList<String>hg= new ArrayList<String>(user.diplaypst(uname,htag));
+		object.put("hahs", hg);
+		//System.out.println("service " + uname);
+		
+		
+
+		return object.toString();
+
+
+}
+	
+	
+
+
+	}
+	
+
+
